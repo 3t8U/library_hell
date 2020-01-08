@@ -1,14 +1,12 @@
 class Book
 
-  attr_reader :id, :name
+  attr_reader :id, :name, :genre
 
 
   def initialize(attributes)
     @name = attributes.fetch(:name)
     @id = attributes.fetch(:id)
     @genre = attributes.fetch(:genre)
-    @checked_out = attributes.fetch(:checked_out)
-    @due_date = attributes.fetch(:due_date)
   end
 
   def ==(book_to_compare)
@@ -21,12 +19,10 @@ class Book
 
   def save
     result = DB.exec("
-      INSERT INTO books (name, genre, checked_out, due_date)
+      INSERT INTO books (name, genre)
       VALUES (
         '#{self.clean(@name)}',
-        '#{@genre}',
-        #{@checked_out},
-        '#{@due_date}'
+        '#{@genre}'
       ) RETURNING id;")
     @id = result.first().fetch('id').to_i
   end
@@ -38,14 +34,10 @@ class Book
       id = book.fetch('id').to_i
       name = book.fetch('name')
       genre = book.fetch('genre')
-      checked_out = (book.fetch('checked_out') == 't')
-      due_date = book.fetch('due_date')
       books_array.push(Book.new({
         :id => id,
         :name => name,
-        :genre => genre,
-        :checked_out => checked_out,
-        :due_date => due_date
+        :genre => genre
       }))
     end
     books_array
@@ -55,4 +47,19 @@ class Book
     Book.get_books("SELECT * FROM books;")
   end
 
+  def delete
+    DB.exec("DELETE FROM books WHERE id = #{@id};")
+    DB.exec("DELETE FROM authors_books WHERE book_id = #{@id};")
+  end
+
+  def self.find(id)
+    Book.get_books("SELECT * FROM books WHERE id = #{id};").first()
+  end
+
+  def update(attributes)
+    @name = attributes.fetch(:name) || @name
+    @genre = attributes.fetch(:genre) || @genre
+    DB.exec("UPDATE books SET name = '#{self.clean(@name)}', genre = '#{@genre}' WHERE id = #{@id};")
+  end
+  
 end
