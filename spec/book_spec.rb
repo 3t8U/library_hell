@@ -75,17 +75,22 @@ describe('#Book') do
     end
   end
 
-  # describe ('#add_author') do
-  #   it('adds an author to the book') do
-  #     book = Book.new({
-  #       :id => nil,
-  #       :name => "Catche'r",
-  #       :genre => 'Sci-Fi'
-  #     })
-  #     book.save()
-  #     book.add_author()
-  #     expect(book.authors()).to(eq(['Hemingway']))
-  #   end
-  # end
+  describe ('#add_author') do
+    it('adds an author to the book') do
+      book = Book.new({
+        :id => nil,
+        :name => "Catche'r",
+        :genre => 'Sci-Fi'
+      })
+      book.save()
+      author = Author.new({
+        :id => nil,
+        :name => "O'hara"
+      })
+      author.save()
+      book.add_author("O'hara")
+      expect(book.authors()).to(eq([author]))
+    end
+  end
 
 end
