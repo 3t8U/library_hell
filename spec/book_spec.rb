@@ -66,8 +66,8 @@ describe('#Book') do
         :genre => 'Sci-Fi'
       })
       book.save()
-      expect(Book.all.first()).to(eq(Book.search({:name => book.name, :genre => ''})))
-      expect(Book.all.first()).to(eq(Book.search({:name => '', :genre => book.genre})))
+      expect(Book.all.first()).to(eq(Book.search({:name => book.name, :genre => ''}).first))
+      expect(Book.all.first()).to(eq(Book.search({:name => '', :genre => book.genre}).first))
     end
   end
 

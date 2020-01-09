@@ -83,6 +83,9 @@ describe('#Patron') do
       patron.save()
       patron.add_book("Catche'r")
       expect(patron.books()).to(eq([book]))
+      expect(
+        DateTime.parse(DB.exec("SELECT * FROM books_patrons WHERE patron_id = #{patron.id}").first().fetch("due_date"))
+      ).to(eq(DateTime.parse("#{(Time.now + Book.lend_time)}".slice(0..18))))
     end
   end
 
