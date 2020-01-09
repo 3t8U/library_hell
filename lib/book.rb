@@ -64,8 +64,12 @@ class Book
   end
 
   def update(attributes)
-    @name = attributes.fetch(:name) || @name
-    @genre = attributes.fetch(:genre) || @genre
+    @name = (attributes.fetch(:name) && attributes.fetch(:name) != '') ?
+      attributes.fetch(:name) :
+      @name
+    @genre = (attributes.fetch(:genre) && attributes.fetch(:genre) != '') ?
+      attributes.fetch(:genre) :
+      @genre
     DB.exec("
       UPDATE books SET name = '#{Book.clean(@name)}', genre = '#{@genre}'
       WHERE id = #{@id};

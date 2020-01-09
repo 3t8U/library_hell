@@ -1,1 +1,28 @@
 <h1>¡EDIT_BØØK!</h1>
+
+
+<h1>Update "<%=@book.name() %>"</h1>
+
+<form action="/books/<%= @book.id() %>" method="post">
+  <input name="_method" type="hidden" value="patch">
+
+  <label for="name">Rename book</label>
+  <input id="name" name="name" type="text" placeholder="<%= @book.name %>">
+  <select class="genre" name="genre">
+    <option value="" disabled selected>Select a genre (currently <%= @book.genre %>)</option>
+    <option  value="Sci-Fi">Sci-Fi</option>
+    <option  value="Harlequin Romance">Harlequin Romance</option>
+    <option  value="Horror">Horror</option>
+    <option  value="Western">Western</option>
+  </select>
+  <label for="author_name">Add author</label>
+  <input id="author_name" name="author_name" type="text">
+  <button type="submit">Update</button>
+</form>
+
+<form action="/books/<%= @book.id() %>" method="post">
+  <input name="_method" type="hidden" value="delete">
+
+  <button type="submit">Delete book</button>
+</form>
+<p><a href="/books">Return to book list</a></p>

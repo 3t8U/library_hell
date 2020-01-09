@@ -1,1 +1,18 @@
 <h1>¡AUTHOR!</h1>
+<h3>Name: <%= @author.name %></h3>
+<h3>Works:</h3>
+<% books = @author.books %>
+<% if books %>
+  <ul>
+    <% books.each do |book| %>
+      <li><a href="/books/<%= book.id %>"><h3><%= book.name %></h3></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Still at the coffee shop staring at a bllaaaaaannnnnnnk screen.......</p>
+<% end %>
+
+
+<form action="/authors/<%= @author.id %>/edit" method="get">
+  <button type="submit" class="btn">Edit Author</button>
+</form>

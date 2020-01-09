@@ -1,0 +1,34 @@
+div class="books_main">
+  <a href="/books/new"><h3>Add a book!</h3></a>
+  <a href="/authors"><h3>View authors.</h3></a>
+</div>
+
+
+<h3>Current Catalog:</h3>
+<% if @books %>
+  <ul>
+    <% @books.each do |book| %>
+      <li><a href="/books/<%= book.id %>"><%= book.name %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are currently no books to display.</p>
+<% end %>
+
+
+<form action="/books/search" method="post">
+  <div class="form-group">
+    <label for="name">Search Name</label>
+    <input id="search" name="name" class="form-control" type="text">
+    <label for="genre">Search Genre</label>
+    <input id="search" name="genre" class="form-control" type="text">
+    <label for="author">Search Genre</label>
+    <input id="search" name="author" class="form-control" type="text">
+    <label for="author">Search Authors</label>
+  </div>
+  <button type="submit" class="btn">Search</button>
+</form>
+
+<form class="" action="/purge" method="get">
+  <button type="submit" name="button">PURGE</button>
+</form>

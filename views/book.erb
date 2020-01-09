@@ -14,10 +14,6 @@
 <% end %>
 
 
-<form action="/books/<%= @book.id %>/add_author" method="get">
-  <div class="form-group">
-    <label for="search">Search</label>
-    <input id="search" name="search" class="form-control" type="text">
-  </div>
-  <button type="submit" class="btn">Search</button>
+<form action="/books/<%= @book.id %>/edit" method="get">
+  <button type="submit" class="btn">Edit Book</button>
 </form>

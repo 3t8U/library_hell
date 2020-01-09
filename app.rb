@@ -16,6 +16,8 @@ end
 
 get('/purge') do
   DB.exec("DELETE FROM books *;")
+  DB.exec("DELETE FROM authors *;")
+
   redirect to('/books')
 end
 
@@ -24,7 +26,7 @@ get('/books') do
   erb(:books)
 end
 
-get('/author') do
+get('/authors') do
   @authors = Author.all()
   erb(:authors)
 end
@@ -58,15 +60,62 @@ get ('/books/:id') do
   erb(:book)
 end
 
+get ('/authors/:id') do
+  @author = Author.find(params[:id].to_i())
+  erb(:author)
+end
+
 get ('/books/:id/edit') do
   @book = Book.find(params[:id].to_i())
   erb(:edit_book)
 end
 
+get ('/authors/:id/edit') do
+  @author = Author.find(params[:id].to_i())
+  erb(:edit_author)
+end
+
 patch ('/books/:id') do
   @book = Book.find(params[:id].to_i())
-  @book.update({:name => params[:name], :author_name => params[:author_name]})
-  redirect to('')
+  @book.update({:name => params[:name], :genre => params[:genre]})
+  new_author = params[:author_name]
+  if (new_author != "")
+    author = Author.new({
+      :id => nil,
+      :name => "#{new_author}"
+    })
+    author.save()
+    @book.add_author(author.name)
+  end
+  redirect to("/books/#{params[:id]}")
+end
+
+patch ('/authors/:id') do
+  @author = Author.find(params[:id].to_i())
+  @author.update({:name => params[:name]})
+  new_book = params[:book_name]
+  if (new_book != "")
+    book = Book.new({
+      :id => nil,
+      :name => "#{new_book}",
+      :genre => "TBD"
+    })
+    book.save()
+    @author.add_book(book.name)
+  end
+  redirect to("/authors/#{params[:id]}")
+end
+
+delete ('/books/:id') do
+  @book = Book.find(params[:id].to_i())
+  @book.delete()
+  redirect to('/books')
+end
+
+delete ('/authors/:id') do
+  @author = Author.find(params[:id].to_i())
+  @author.delete()
+  redirect to('/authors')
 end
 
 

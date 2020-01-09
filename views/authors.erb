@@ -1,1 +1,31 @@
 <h1>¡AUTHORS!</h1>
+
+<div class="authors_main">
+  <a href="/authors/new"><h3>Add an Author!</h3></a>
+  <a href="/books"><h3>View Books.</h3></a>
+</div>
+
+
+<h3>List of Authors:</h3>
+<% if @authors %>
+  <ul>
+    <% @authors.each do |author| %>
+      <li><a href="/authors/<%= author.id %>"><%= author.name %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are currently no Authors to display.</p>
+<% end %>
+
+
+<form action="/authors/search" method="post">
+  <div class="form-group">
+    <label for="name">Search Name</label>
+    <input id="search" name="name" class="form-control" type="text">
+  </div>
+  <button type="submit" class="btn">Search</button>
+</form>
+
+<form class="" action="/purge" method="get">
+  <button type="submit" name="button">PURGE</button>
+</form>
