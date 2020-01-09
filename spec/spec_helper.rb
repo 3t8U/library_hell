@@ -13,7 +13,7 @@ RSpec.configure do |config|
     DB.exec("DELETE FROM books *;")
     DB.exec("DELETE FROM authors *;")
     DB.exec("DELETE FROM authors_books *;")
-    # DB.exec("DELETE FROM sold_albums *;")
-    # DB.exec("DELETE FROM songs *;")
+    DB.exec("DELETE FROM patrons *;")
+    DB.exec("DELETE FROM books_patrons *;")
   end
 end

@@ -84,4 +84,21 @@ class Book
       nil
   end
 
+  def self.lend_time
+    60
+  end
+
+  def self.get_overdue
+    overdue = DB.exec("SELECT * FROM books_patrons WHERE due_date < '#{Time.now}'")
+    book_id_string = overdue.map{ |checked_out| checked_out.fetch("book_id")}.join(', ')
+    patron_id_string = overdue.map{ |checked_out| checked_out.fetch("patron_id")}.join(', ')
+    books = (book_id_string != '') ?
+      Book.get_books("SELECT * FROM books WHERE id IN (#{book_id_string});") :
+      nil
+    patrons = (patron_id_string != '') ?
+      Patron.get_patrons("SELECT * FROM patrons WHERE id IN (#{patron_id_string});") :
+      nil
+    books.zip(patrons)
+  end
+
 end
