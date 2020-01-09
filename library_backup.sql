@@ -145,7 +145,8 @@ ALTER SEQUENCE public.books_id_seq OWNED BY public.books.id;
 CREATE TABLE public.books_patrons (
     id integer NOT NULL,
     book_id integer,
-    patron_id integer
+    patron_id integer,
+    due_date timestamp without time zone
 );
 
 
@@ -270,7 +271,7 @@ COPY public.books (name, id, genre) FROM stdin;
 -- Data for Name: books_patrons; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
-COPY public.books_patrons (id, book_id, patron_id) FROM stdin;
+COPY public.books_patrons (id, book_id, patron_id, due_date) FROM stdin;
 \.
 
 
