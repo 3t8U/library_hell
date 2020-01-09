@@ -16,7 +16,9 @@ end
 
 get('/purge') do
   DB.exec("DELETE FROM books *;")
+  # DB.exec("ALTER SEQUENCE books_id_sequence RESTART WITH 1;")
   DB.exec("DELETE FROM authors *;")
+  # DB.exec("ALTER SEQUENCE authors_id_sequence RESTART WITH 1;")
 
   redirect to('/books')
 end
@@ -35,6 +37,10 @@ get ('/books/new') do
   erb(:new_book)
 end
 
+get ('/authors/new') do
+  erb(:new_author)
+end
+
 post ('/books') do
   name = params[:book_name]
   genre = params[:genre]
@@ -45,6 +51,13 @@ post ('/books') do
     book.add_author(author)
   end
   redirect to('/books')
+end
+
+post ('/authors') do
+  name = params[:author_name]
+  author = Author.new({:name => name, :id => nil})
+  author.save()
+  redirect to('/authors')
 end
 
 post('/books/search') do

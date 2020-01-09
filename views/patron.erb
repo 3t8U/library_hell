@@ -1,1 +1,19 @@
 <h1>¡PÅTRØN!</h1>
+
+<h3>Name: <%= @patron.name %></h3>
+<h3>Works:</h3>
+<% books = @patron.books %>
+<% if books %>
+  <ul>
+    <% books.each do |book| %>
+      <li><a href="/books/<%= book.id %>"><h3><%= book.name %></h3></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>You currently hav no books checked out :( </p>
+<% end %>
+
+
+<form action="/patrons/<%= @patron.id %>/edit" method="get">
+  <button type="submit" class="btn">Edit Patron</button>
+</form>
