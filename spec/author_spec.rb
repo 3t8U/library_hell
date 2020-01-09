@@ -54,6 +54,17 @@ describe('#Author') do
     end
   end
 
+  describe ('.search') do
+    it('finds an author from the database') do
+      author = Author.new({
+        :id => nil,
+        :name => "O'hara"
+      })
+      author.save()
+      expect(Author.all.first()).to(eq(Author.search(author.name)))
+    end
+  end
+
   describe ('#update') do
     it('updates a book in the database') do
       author = Author.new({

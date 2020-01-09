@@ -72,6 +72,11 @@ class Patron
     ")
   end
 
+  def return_book(book_id)
+    results = DB.exec("SELECT * FROM books_patrons WHERE patron_id = #{@id} AND book_id = #{book_id}").first()
+    DB.exec("DELETE FROM books_patrons WHERE id = #{results.fetch('id')}")
+  end
+
   def books
     results = DB.exec("SELECT * FROM books_patrons WHERE patron_id = #{@id}")
     id_string = results.map{ |result| result.fetch("book_id")}.join(', ')

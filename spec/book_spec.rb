@@ -58,6 +58,19 @@ describe('#Book') do
     end
   end
 
+  describe ('.search') do
+    it('finds a book from database') do
+      book = Book.new({
+        :id => nil,
+        :name => "Catche'r",
+        :genre => 'Sci-Fi'
+      })
+      book.save()
+      expect(Book.all.first()).to(eq(Book.search({:name => book.name, :genre => ''})))
+      expect(Book.all.first()).to(eq(Book.search({:name => '', :genre => book.genre})))
+    end
+  end
+
   describe ('#update') do
     it('updates a book in the database') do
       book = Book.new({

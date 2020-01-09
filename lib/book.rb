@@ -12,14 +12,14 @@ class Book
     @id == book_to_compare.id && @name == book_to_compare.name
   end
 
-  def clean(string)
+  def Book.clean(string)
     (string.include?("'")) ? string.gsub("'", "''") : string
   end
 
   def save
     result = DB.exec("
       INSERT INTO books (name, genre)
-      VALUES ('#{self.clean(@name)}', '#{@genre}') RETURNING id;
+      VALUES ('#{Book.clean(@name)}', '#{@genre}') RETURNING id;
     ")
     @id = result.first().fetch('id').to_i
   end
@@ -49,18 +49,32 @@ class Book
     Book.get_books("SELECT * FROM books WHERE id = #{id};").first()
   end
 
+  def self.search(search)
+    if search.fetch(:name) != ''
+      Book.get_books("
+        SELECT * FROM books
+        WHERE lower(name) LIKE '%#{self.clean(search.fetch(:name).downcase)}%';
+      ")
+    elsif search.fetch(:genre) != ''
+      Book.get_books("
+        SELECT * FROM books
+        WHERE genre = '#{search.fetch(:genre)}';
+      ")
+    end
+  end
+
   def update(attributes)
     @name = attributes.fetch(:name) || @name
     @genre = attributes.fetch(:genre) || @genre
     DB.exec("
-      UPDATE books SET name = '#{self.clean(@name)}', genre = '#{@genre}'
+      UPDATE books SET name = '#{Book.clean(@name)}', genre = '#{@genre}'
       WHERE id = #{@id};
     ")
   end
 
   def add_author(name)
     result = Author.get_authors("
-      SELECT * FROM authors WHERE name = '#{self.clean(name)}'
+      SELECT * FROM authors WHERE name = '#{Book.clean(name)}'
     ")
     if(result.length <1)
       author = Author.new({

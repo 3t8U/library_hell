@@ -1,1 +1,10 @@
- 
+ body {
+   background-color: aqua;
+ }
+
+.home {
+  border-radius: 15px;
+  text-align: center;
+  font-family: monospace;
+  background-color: lightgreen;
+}

@@ -1,0 +1,20 @@
+<h1>¡NEW_BØØK!</h1>
+
+
+<form action="/books" method="post">
+  <div class="form-group">
+    <label for="book_name">Book Title</label>
+    <input id="n" name="book_name" class="form-control" type="text">
+    <label for="author">Author Name</label>
+    <input id="n" name="author" class="form-control" type="text">
+    <select class="genre" name="genre">
+      <option value="" disabled selected>Select a genre</option>
+      <option  value="Sci-Fi">Sci-Fi</option>
+      <option  value="Harlequin Romance">Harlequin Romance</option>
+      <option  value="Horror">Horror</option>
+      <option  value="Western">Western</option>
+    </select>
+  </div>
+  <button type="submit" class="btn">Add book</button>
+</form>
+<a href="/books">Cancel</a>

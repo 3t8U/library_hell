@@ -1,14 +1,32 @@
 require('sinatra')
 require('sinatra/reloader')
 require('./lib/book')
+require('./lib/author')
+require('./lib/patron')
 require('pry')
 require('pg')
 also_reload('lib/**/*.rb')
+require './config'
 
 DB = PG.connect(DB_PARAMS)
 
 get('/') do
-  redirect to ('/books')
+  erb(:home)
+end
+
+get('/purge') do
+  DB.exec("DELETE FROM books *;")
+  redirect to('/books')
+end
+
+get('/books') do
+  @books = Book.all()
+  erb(:books)
+end
+
+get('/author') do
+  @authors = Author.all()
+  erb(:authors)
 end
 
 get ('/books/new') do
@@ -17,9 +35,22 @@ end
 
 post ('/books') do
   name = params[:book_name]
+  genre = params[:genre]
+  author = params[:author]
   book = Book.new({:name => name, :id => nil, :genre => genre})
   book.save()
+  if author != ''
+    book.add_author(author)
+  end
   redirect to('/books')
+end
+
+post('/books/search') do
+  name = params[:name]
+  genre = params[:genre]
+  @query = "#{(name != '') ? ('Name: ' + name) : ''}#{(genre != '') ? (((name != '') ? ', ' : '') + 'Genre: ' + genre) : ''}"
+  @books = Book.search({:name => name, :genre => genre})
+  erb(:search)
 end
 
 get ('/books/:id') do

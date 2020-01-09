@@ -1,0 +1,23 @@
+<h1>¡BOOK!</h1>
+<h3>Name: <%= @book.name %></h3>
+<h3>Genre: <%= @book.genre %></h3>
+<h3>Written By:</h3>
+<% authors = @book.authors %>
+<% if authors %>
+  <ul>
+    <% authors.each do |author| %>
+      <li><a href="/authors/<%= author.id %>"><h3><%= author.name %></h3></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Oops! We ran out of ink! (or we don't know who wrote this book yet...)</p>
+<% end %>
+
+
+<form action="/books/<%= @book.id %>/add_author" method="get">
+  <div class="form-group">
+    <label for="search">Search</label>
+    <input id="search" name="search" class="form-control" type="text">
+  </div>
+  <button type="submit" class="btn">Search</button>
+</form>

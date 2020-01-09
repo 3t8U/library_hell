@@ -86,4 +86,24 @@ describe('#Patron') do
     end
   end
 
+  describe ('#return_book') do
+    it('adds a book to the patron') do
+      book = Book.new({
+        :id => nil,
+        :name => "Catche'r",
+        :genre => 'Sci-Fi'
+      })
+      book.save()
+      patron = Patron.new({
+        :id => nil,
+        :name => "O'hara"
+      })
+      patron.save()
+      patron.add_book("Catche'r")
+      expect(patron.books()).to(eq([book]))
+      patron.return_book(book.id)
+      expect(patron.books()).to(eq(nil))
+    end
+  end
+
 end
